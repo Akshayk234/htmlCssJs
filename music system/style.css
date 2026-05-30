@@ -1,0 +1,509 @@
+/* ============================================
+   SONIX — Music Player Styles
+   Theme: Retro-Industrial Dark
+============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:        #0d0d0d;
+  --surface:   #141414;
+  --surface2:  #1c1c1c;
+  --border:    #2a2a2a;
+  --accent:    #e8ff00;
+  --accent2:   #ff4d00;
+  --text:      #f0f0e8;
+  --muted:     #5a5a52;
+  --radius:    4px;
+}
+
+/* ---------- Background ---------- */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Player Shell ---------- */
+.player-shell {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  gap: 0;
+  width: min(820px, 96vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px #ffffff08,
+    0 40px 80px #00000099,
+    8px 8px 0 0 var(--accent);
+  animation: slideIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---------- Art Section ---------- */
+.art-section {
+  width: 280px;
+  flex-shrink: 0;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 20px;
+  border-right: 1px solid var(--border);
+  gap: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.art-section::before {
+  content: 'SONIX';
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+/* ---------- Vinyl ---------- */
+.vinyl-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.vinyl {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #1a1a1a 28%, transparent 28%),
+    repeating-conic-gradient(#111 0deg 2deg, #1d1d1d 2deg 4deg);
+  border: 2px solid #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow:
+    0 0 0 6px #161616,
+    0 0 0 8px #242424,
+    0 20px 60px #00000088;
+  animation: none;
+  transition: box-shadow 0.3s;
+}
+
+.vinyl.spinning {
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.vinyl-label {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #b8cc00 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.vinyl-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #0d0d0d;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Vinyl needle */
+.vinyl-wrap::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: -12px;
+  width: 3px;
+  height: 70px;
+  background: linear-gradient(180deg, #888 0%, #444 100%);
+  border-radius: 2px;
+  transform-origin: top center;
+  transform: rotate(28deg);
+  opacity: 0.7;
+}
+
+/* ---------- EQ Bars ---------- */
+.eq-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 32px;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.eq-bars.active { opacity: 1; }
+
+.eq-bars span {
+  width: 6px;
+  border-radius: 2px 2px 0 0;
+  background: var(--accent);
+  height: 6px;
+  transition: height 0.1s;
+}
+
+.eq-bars.active span:nth-child(1)  { animation: eq 0.8s ease-in-out infinite alternate; }
+.eq-bars.active span:nth-child(2)  { animation: eq 0.6s ease-in-out 0.1s infinite alternate; }
+.eq-bars.active span:nth-child(3)  { animation: eq 1.0s ease-in-out 0.2s infinite alternate; }
+.eq-bars.active span:nth-child(4)  { animation: eq 0.7s ease-in-out 0.05s infinite alternate; }
+.eq-bars.active span:nth-child(5)  { animation: eq 0.9s ease-in-out 0.15s infinite alternate; }
+.eq-bars.active span:nth-child(6)  { animation: eq 0.5s ease-in-out 0.3s infinite alternate; }
+.eq-bars.active span:nth-child(7)  { animation: eq 1.1s ease-in-out 0.1s infinite alternate; }
+.eq-bars.active span:nth-child(8)  { animation: eq 0.65s ease-in-out 0.25s infinite alternate; }
+.eq-bars.active span:nth-child(9)  { animation: eq 0.75s ease-in-out 0.35s infinite alternate; }
+.eq-bars.active span:nth-child(10) { animation: eq 0.85s ease-in-out 0.05s infinite alternate; }
+
+@keyframes eq {
+  from { height: 4px; }
+  to   { height: 30px; }
+}
+
+/* ---------- Control Section ---------- */
+.control-section {
+  flex: 1;
+  padding: 28px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* ---------- Track Meta ---------- */
+.track-meta { }
+
+.track-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--accent2);
+  margin-bottom: 6px;
+}
+
+.track-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: 2px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s;
+}
+
+.track-artist {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.status-msg {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 6px;
+  min-height: 14px;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+
+/* ---------- Progress ---------- */
+.progress-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.time {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s linear;
+  position: relative;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 12px;
+  height: 12px;
+  background: var(--text);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: left 0.3s linear;
+  box-shadow: 0 0 0 3px var(--surface);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.progress-bar:hover .progress-thumb { opacity: 1; }
+
+/* ---------- Main Controls ---------- */
+.main-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: var(--radius);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.ctrl-btn:hover {
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.ctrl-btn:active { transform: scale(0.92); }
+
+.ctrl-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.ctrl-btn.active { color: var(--accent); }
+
+/* Play button */
+.ctrl-play {
+  width: 56px;
+  height: 56px;
+  background: var(--accent) !important;
+  color: #0d0d0d !important;
+  border-radius: 50% !important;
+  border: none;
+  box-shadow: 0 0 0 0 var(--accent);
+  transition: box-shadow 0.3s, transform 0.15s !important;
+}
+
+.ctrl-play:hover {
+  box-shadow: 0 0 0 8px rgba(232,255,0,0.15);
+}
+
+.ctrl-play svg { width: 22px; height: 22px; }
+
+/* Prev/Next */
+.ctrl-prev svg, .ctrl-next svg { width: 22px; height: 22px; }
+
+/* ---------- Volume ---------- */
+.volume-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vol-icon {
+  width: 16px;
+  height: 16px;
+  fill: var(--muted);
+  flex-shrink: 0;
+}
+
+.volume-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--surface);
+  transition: transform 0.2s;
+}
+
+.volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+.vol-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  width: 26px;
+  text-align: right;
+}
+
+/* ---------- Playlist ---------- */
+.playlist { flex: 1; min-height: 0; }
+
+.playlist-header {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.playlist-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 140px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.playlist-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-left: 2px solid transparent;
+}
+
+.playlist-list li:hover {
+  background: var(--surface2);
+}
+
+.playlist-list li.active {
+  background: var(--surface2);
+  border-left-color: var(--accent);
+}
+
+.pl-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  width: 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.pl-info { flex: 1; min-width: 0; }
+
+.pl-name {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pl-artist {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.pl-dur {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.playlist-list li.active .pl-name { color: var(--accent); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .player-shell { flex-direction: column; width: 96vw; box-shadow: 0 0 0 1px #ffffff08, 0 40px 80px #00000099, 4px 4px 0 0 var(--accent); }
+  .art-section { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; padding: 20px; gap: 20px; justify-content: flex-start; }
+  .vinyl-wrap, .vinyl { width: 90px; height: 90px; }
+  .vinyl-label { width: 28px; height: 28px; }
+  .vinyl-title { font-size: 6px; }
+  .vinyl-wrap::after { height: 44px; }
+  .eq-bars { height: 20px; }
+  .control-section { padding: 20px 16px; }
+  .track-title { font-size: 28px; }
+}
